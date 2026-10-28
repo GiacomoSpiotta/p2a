@@ -3,16 +3,16 @@ from .base import Plan
 
 
 def library_plan(d: Diagnosis) -> Plan:
-    """Libreria con tutorial: delega a Paper2Agent così com'è."""
+    """Library with tutorials: delegate to Paper2Agent as is."""
     return Plan(
         strategy="library",
-        produces="tool MCP riutilizzabili, uno per operazione del tutorial",
-        validation="test sugli esempi del tutorial (numeri entro il 3%, figure per hash)",
+        produces="reusable MCP tools, one per tutorial operation",
+        validation="tests on the tutorial examples (numbers within 3%, figures by perceptual hash)",
         steps=[
-            "installa l'ambiente dai file di installazione",
-            "esegui i tutorial e salva gli output di riferimento",
-            "estrai le funzioni con i valori cablati esposti come parametri",
-            "genera e ripeti i test fino a sei tentativi; scarta quello che non passa",
-            "assembla il server MCP",
+            "install the environment from the install files",
+            "run the tutorials and save the reference outputs",
+            "extract the functions with hard-coded values exposed as parameters",
+            "generate and rerun tests up to six attempts; drop what does not pass",
+            "assemble the MCP server",
         ],
     )

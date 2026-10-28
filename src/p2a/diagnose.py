@@ -1,6 +1,6 @@
-"""Diagnosi statica: legge i file del repository e produce i segnali.
+"""Static diagnosis: read the repository files and produce the signals.
 
-Nessun codice viene eseguito. Costa secondi e non ha bisogno di un modello.
+No code is executed. It takes seconds and needs no model.
 """
 
 from pathlib import Path

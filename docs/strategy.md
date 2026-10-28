@@ -1,0 +1,79 @@
+# Strategy: diagnose before extracting
+
+## Problem
+
+Paper2Agent (Miao et al., Nature 2026) turns a scientific repository into an MCP server with
+a single strategy: extract reusable functions from the executable tutorials, test them on the
+tutorial's own examples, drop whatever fails. On 100 computational-biology papers it converts
+74. The remaining 26 are discarded with no diagnosis: nobody knows why they fail or how much
+is missing.
+
+The stated causes are four: no executable code, data or models unavailable, environment that
+cannot be rebuilt, scripts that do not generalize. The pipeline treats all of them the same
+way, i.e. it asks every repository to behave like a library with tutorials.
+
+## Idea
+
+Add a diagnosis step before extraction and pick the strategy from its result. The repository
+does not have to be a library: it has to be what it is.
+
+Paper2Agent's extraction for libraries is left untouched (it works). What is added is what is
+missing for the other shapes.
+
+## Classes
+
+| Class | How it is recognized | What is produced | Validation |
+| --- | --- | --- | --- |
+| `library` | installable package, API, tutorial or notebook with outputs | reusable tools (Paper2Agent) | tests on the tutorial examples |
+| `stepwise` | script or notebook with separable steps (functions, cells with intermediate outputs) | tools for the steps that generalize, plus one tool that reruns the rest | per-step tests where an intermediate output exists; final comparison against the paper's figures |
+| `monolithic` | single sequence, hard-coded values, no step makes sense on its own | one tool `reproduce(data)` with hard-coded values exposed as parameters | outputs compared against the original ones |
+| `missing_data` | code is there but points at data or models that are neither present nor downloadable | recovery from DOI, Zenodo, Figshare, GEO, Hugging Face; fallback to synthetic data with the same schema | runs without errors, output shape checked |
+| `text_only` | no code | resource layer (paper text and supplements, queryable) | synthesis questions |
+
+Classes are not exclusive: a repository can be `stepwise` and `missing_data` at once. The
+diagnosis returns a primary class plus the list of what is missing.
+
+## Diagnosis
+
+Two levels, in order of cost.
+
+1. **Static** (seconds, no LLM): signals read from the files. Presence of pyproject, setup,
+   requirements, environment.yml, DESCRIPTION, Dockerfile; notebooks and tutorials; tests;
+   hard-coded absolute paths; data URLs and DOIs in the README; use of argparse or config
+   files; languages. Produces a profile and a provisional class.
+2. **Dynamic** (minutes, with an agent): try to install, run the tutorial or the main script,
+   list the files the code tries to read and cannot find. Confirms or corrects the class and
+   estimates recoverability.
+
+The output is one JSON card per repository (`report.py`). The card is the data: aggregated
+over a sample of papers it gives the distribution of failure causes, which does not exist in
+the literature today.
+
+## Evaluation
+
+Sample: the 100 computational-biology papers and the 10 non-biology papers from the
+Paper2Agent repository (the list is public), plus an independent sample if needed.
+
+Three numbers to report:
+
+1. distribution of classes and of missing items over the sample;
+2. how many of the 26 failed papers yield something useful under the assigned strategy
+   (a tool that reruns, recovered data, at least one extracted step), against zero today;
+3. time and dollar cost compared with the single-attempt pipeline.
+
+Honest result to state: the tools reproduce the original outputs and run on new data. They
+are not shown to be correct on new data.
+
+## Out of scope
+
+- Environment setup: ten systems already exist and the residual failures are structural.
+- Code generation from the paper text: high risk, benchmarks already crowded.
+- R and Bioconductor: natural extension, but later.
+
+## Order of work
+
+1. Static diagnosis and JSON card (this repository, today).
+2. Dynamic diagnosis as a Claude Code sub-agent (`prompts/diagnose.md`).
+3. `monolithic` strategy: the simplest and the most neglected.
+4. `missing_data` strategy: DOI resolution and synthetic data.
+5. Run over the sample and report the table.

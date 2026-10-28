@@ -3,10 +3,10 @@ from .base import Plan
 
 
 def text_only_plan(d: Diagnosis) -> Plan:
-    """Nessun codice: solo strato di risorse, come fa già Paper2Agent."""
+    """No code: resource layer only, as Paper2Agent already does."""
     return Plan(
         strategy="text_only",
-        produces="risorse MCP: testo del paper, supplementari, tabelle",
-        validation="domande di sintesi con risposta nota",
-        steps=["estrai testo e tabelle", "registra come risorse MCP", "nessun tool"],
+        produces="MCP resources: paper text, supplements, tables",
+        validation="synthesis questions with known answers",
+        steps=["extract text and tables", "register as MCP resources", "no tools"],
     )

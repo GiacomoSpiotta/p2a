@@ -1,7 +1,7 @@
-"""Una strategia per classe. Ogni strategia prende una diagnosi e produce un piano.
+"""One strategy per class. Each strategy takes a diagnosis and produces a plan.
 
-Le strategie sono stub: descrivono cosa produrre e come validarlo. L'esecuzione
-vera (estrazione, test, server MCP) è il passo successivo del progetto.
+Strategies are stubs: they describe what to produce and how to validate it.
+The actual execution (extraction, tests, MCP server) is the project's next step.
 """
 
 from ..report import Diagnosis

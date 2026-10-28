@@ -1,6 +1,6 @@
-"""Uso: p2a diagnose <cartella_repo> [--json]
+"""Usage: p2a diagnose <repo_folder> [--json]
 
-Stampa la scheda di diagnosi e il piano della strategia assegnata.
+Prints the diagnosis card and the plan of the assigned strategy.
 """
 
 import sys
@@ -20,7 +20,7 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     root = Path(argv[1]).resolve()
     if not root.is_dir():
-        print(f"non è una cartella: {root}")
+        print(f"not a folder: {root}")
         return 2
 
     signals = diagnose_static(root)
@@ -28,19 +28,19 @@ def main(argv: list[str] | None = None) -> int:
     plan = plan_for(d)
 
     if "--json" in argv:
-        print(json.dumps({"diagnosis": asdict(d), "plan": asdict(plan)}, indent=2, ensure_ascii=False))
+        print(json.dumps({"diagnosis": asdict(d), "plan": asdict(plan)}, indent=2))
         return 0
 
-    print(f"repository: {d.repo}")
-    print(f"classe:     {d.primary_class}   recuperabilità: {d.recoverability}")
-    print(f"mancanze:   {', '.join(d.missing) or 'nessuna'}")
-    print("perché:")
+    print(f"repository:  {d.repo}")
+    print(f"class:       {d.primary_class}   recoverability: {d.recoverability}")
+    print(f"missing:     {', '.join(d.missing) or 'none'}")
+    print("why:")
     for r in d.rationale:
         print(f"  - {r}")
-    print(f"\nstrategia:  {plan.strategy}")
-    print(f"produce:    {plan.produces}")
-    print(f"validazione:{plan.validation}")
-    print("passi:")
+    print(f"\nstrategy:    {plan.strategy}")
+    print(f"produces:    {plan.produces}")
+    print(f"validation:  {plan.validation}")
+    print("steps:")
     for i, step in enumerate(plan.steps, 1):
         print(f"  {i}. {step}")
     return 0

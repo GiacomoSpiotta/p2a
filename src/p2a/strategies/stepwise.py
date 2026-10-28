@@ -3,16 +3,16 @@ from .base import Plan
 
 
 def stepwise_plan(d: Diagnosis) -> Plan:
-    """Script con passi separabili: tool per i passi che generalizzano, più un tool
-    che riesegue il resto."""
+    """Script with separable steps: tools for the steps that generalize, plus one
+    tool that reruns the rest."""
     return Plan(
         strategy="stepwise",
-        produces="tool per i passi con input e output chiari; un tool `run_rest` per la parte legata al paper",
-        validation="test per passo dove esiste un output intermedio; confronto finale con figure e tabelle del paper",
+        produces="tools for the steps with clear inputs and outputs; one `run_rest` tool for the paper-specific part",
+        validation="per-step tests where an intermediate output exists; final comparison against the paper's figures and tables",
         steps=[
-            "esegui lo script sui dati originali e registra ogni file letto e scritto",
-            "segmenta per confini di I/O: ogni tratto tra una lettura e una scrittura è un passo candidato",
-            "per ogni passo, chiedi: ha senso su dati diversi? se sì, tool con parametri; se no, resta in `run_rest`",
-            "test: il passo riproduce l'output intermedio originale",
+            "run the script on the original data and record every file read and written",
+            "segment on I/O boundaries: each stretch between a read and a write is a candidate step",
+            "for each step ask: does it make sense on different data? if yes, a tool with parameters; if not, it stays in `run_rest`",
+            "test: the step reproduces the original intermediate output",
         ],
     )

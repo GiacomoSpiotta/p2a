@@ -1,7 +1,7 @@
 [project]
 name = "p2a"
 version = "0.0.1"
-description = "Diagnosi di un repository scientifico prima dell'agentificazione"
+description = "Diagnose a scientific repository before agentifying it"
 requires-python = ">=3.10"
 dependencies = []
 

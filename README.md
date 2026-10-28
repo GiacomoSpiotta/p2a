@@ -1,33 +1,33 @@
-# p2a: diagnosi prima dell'agentificazione
+# p2a: diagnose before agentifying
 
-Concept per un contributo sopra Paper2Agent (Miao et al., Nature 2026): invece di chiedere a
-ogni repository scientifico di comportarsi come una libreria con tutorial, lo si diagnostica
-prima e si sceglie una strategia per la forma che ha davvero.
+Concept for a contribution on top of Paper2Agent (Miao et al., Nature 2026): instead of
+asking every scientific repository to behave like a library with tutorials, diagnose it first
+and pick a strategy for the shape it actually has.
 
-La strategia completa è in `docs/strategia.md`.
+The full strategy is in `docs/strategy.md`.
 
-## Cosa c'è
+## What is here
 
-- `src/p2a/diagnose.py`: diagnosi statica, legge i file e produce i segnali. Nessuna esecuzione.
-- `src/p2a/classify.py`: regole che assegnano una classe (`library`, `stepwise`, `monolithic`,
-  `missing_data`, `text_only`) e le mancanze.
-- `src/p2a/strategies/`: un piano per classe. Sono stub: dicono cosa produrre e come validarlo.
-- `src/p2a/report.py`: la scheda JSON, che è il dato del progetto.
-- `prompts/diagnose.md`: prompt del sub-agente per la diagnosi dinamica (Claude Code).
-- `eval/`: campione e numeri da riportare.
+- `src/p2a/diagnose.py`: static diagnosis, reads the files and produces signals. Nothing is executed.
+- `src/p2a/classify.py`: rules that assign a class (`library`, `stepwise`, `monolithic`,
+  `missing_data`, `text_only`) and the list of missing items.
+- `src/p2a/strategies/`: one plan per class. Stubs: they say what to produce and how to validate it.
+- `src/p2a/report.py`: the JSON card, which is the project's data.
+- `prompts/diagnose.md`: prompt for the dynamic-diagnosis sub-agent (Claude Code).
+- `eval/`: sample and the numbers to report.
 
-## Uso
+## Usage
 
 ```
 uv venv && source .venv/bin/activate
 uv pip install -e .
-p2a diagnose /percorso/di/un/repo
-p2a diagnose /percorso/di/un/repo --json
+p2a diagnose /path/to/a/repo
+p2a diagnose /path/to/a/repo --json
 pytest
 ```
 
-## Prossimi passi
+## Next steps
 
-1. Far girare la diagnosi statica sui 110 repository del campione di Paper2Agent.
-2. Implementare la diagnosi dinamica come sub-agente.
-3. Implementare la strategia `monolithic`, che è la più semplice.
+1. Run the static diagnosis over the 110 repositories of the Paper2Agent sample.
+2. Implement the dynamic diagnosis as a sub-agent.
+3. Implement the `monolithic` strategy, which is the simplest.

@@ -1,7 +1,7 @@
-"""Scheda di diagnosi di un repository.
+"""Diagnosis card for a repository.
 
-La scheda è il dato principale del progetto: aggregata su un campione di paper
-dà la distribuzione delle cause di fallimento.
+The card is the project's main data: aggregated over a sample of papers it gives
+the distribution of failure causes.
 """
 
 from dataclasses import dataclass, field, asdict
@@ -10,7 +10,7 @@ import json
 
 @dataclass
 class Signals:
-    """Segnali letti dai file del repository, senza eseguire nulla."""
+    """Signals read from the repository files, without executing anything."""
 
     languages: dict[str, int] = field(default_factory=dict)
     install_files: list[str] = field(default_factory=list)
@@ -37,4 +37,4 @@ class Diagnosis:
     rationale: list[str]
 
     def to_json(self) -> str:
-        return json.dumps(asdict(self), indent=2, ensure_ascii=False)
+        return json.dumps(asdict(self), indent=2)
