@@ -29,5 +29,8 @@ pytest
 ## Next steps
 
 1. Run the static diagnosis over the 110 repositories of the Paper2Agent sample.
-2. Implement the dynamic diagnosis as a sub-agent.
-3. Implement the `monolithic` strategy, which is the simplest.
+2. Aggregate the exclusion reasons from Paper2Agent's `reports/agent-runs.json` into the card.
+3. Implement the dynamic diagnosis as a sub-agent.
+4. Implement the `monolithic` strategy, which is the simplest.
+
+See `docs/strategy.md` for what the Paper2Agent repository already covers (R route, CLI route, exclusions with reasons) and what remains open.

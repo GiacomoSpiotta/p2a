@@ -12,6 +12,30 @@ The stated causes are four: no executable code, data or models unavailable, envi
 cannot be rebuilt, scripts that do not generalize. The pipeline treats all of them the same
 way, i.e. it asks every repository to behave like a library with tutorials.
 
+## What the Paper2Agent repository already does (checked October 2026)
+
+The repository is no longer the Python orchestrator described in the paper's Methods. It is a
+skill for Claude Code or Codex (`skills/paper2agent/`) with three parts:
+
+- `paper2mcp`: repository to MCP server. Sub-agents are markdown instruction files. Three
+  routes by interface: Python library, R package, command line (CLI).
+- `paper2skill`: paper PDF to a skill bundle, i.e. the text and supplements layer.
+- `reports/agent-runs.json`: recorded workflow state with assignments, file hashes and
+  **exclusions with reasons**.
+
+Consequences for this concept:
+
+- R is covered by a route; it is no longer an open gap.
+- The CLI route covers scripts run from the command line with documented examples and real
+  data. It does not cover scripts without a documented interface, and it explicitly refuses to
+  substitute missing domain data with random tables: such tools are marked blocked and excluded.
+- Every excluded tool already carries a reason. Measuring the distribution of failure causes
+  can start from those records instead of from scratch.
+
+So the open classes are `monolithic` (analysis scripts with no interface) and `missing_data`
+(code present, data or models absent). The `library` class and the documented half of
+`stepwise` are theirs.
+
 ## Idea
 
 Add a diagnosis step before extraction and pick the strategy from its result. The repository
@@ -45,7 +69,7 @@ Two levels, in order of cost.
    list the files the code tries to read and cannot find. Confirms or corrects the class and
    estimates recoverability.
 
-The output is one JSON card per repository (`report.py`). The card is the data: aggregated
+The output is one JSON card per repository (`report.py`), written to `.pipeline/diagnosis.json` next to Paper2Agent's own `.pipeline/language.json`. The card is the data: aggregated
 over a sample of papers it gives the distribution of failure causes, which does not exist in
 the literature today.
 
@@ -73,7 +97,9 @@ are not shown to be correct on new data.
 ## Order of work
 
 1. Static diagnosis and JSON card (this repository, today).
-2. Dynamic diagnosis as a Claude Code sub-agent (`prompts/diagnose.md`).
-3. `monolithic` strategy: the simplest and the most neglected.
-4. `missing_data` strategy: DOI resolution and synthetic data.
-5. Run over the sample and report the table.
+2. Aggregate the `exclusions` of Paper2Agent runs over the sample into the same card: first distribution of causes.
+3. Dynamic diagnosis as a Claude Code sub-agent (`prompts/diagnose.md`).
+4. `monolithic` strategy: the simplest and the most neglected.
+5. `missing_data` strategy: DOI resolution and synthetic data.
+6. Package the whole thing as a skill alongside `paper2mcp`, so it runs in the same host.
+7. Run over the sample and report the table.
