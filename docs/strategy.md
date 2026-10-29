@@ -8,9 +8,12 @@ tutorial's own examples, drop whatever fails. On 100 computational-biology paper
 74. The remaining 26 are discarded with no diagnosis: nobody knows why they fail or how much
 is missing.
 
-The stated causes are four: no executable code, data or models unavailable, environment that
-cannot be rebuilt, scripts that do not generalize. The pipeline treats all of them the same
-way, i.e. it asks every repository to behave like a library with tutorials.
+The stated causes are four, and the supplement (section 7) gives their shares among the 26:
+no executable code 34%, data or model artifacts missing 31%, environment or dependency
+failures 23%, non-generalizable scripts 12%. The pipeline treats all of them the same way,
+i.e. it asks every repository to behave like a library with tutorials. The supplement also
+gives the cost: 14.99 dollars and 2.4 hours per converted paper, 9.03 dollars and 1.7 hours
+per failed one (failures happen early).
 
 ## What the Paper2Agent repository already does (checked October 2026)
 
@@ -31,6 +34,11 @@ Consequences for this concept:
   substitute missing domain data with random tables: such tools are marked blocked and excluded.
 - Every excluded tool already carries a reason. Measuring the distribution of failure causes
   can start from those records instead of from scratch.
+- The list of the 100 papers is not in the repository (checked `main`, the `legacy-cli` tag
+  and the `jdavis_eval_scale_up` and `jdavis_bench_link` branches, October 2026). The
+  benchmark pipeline (steps 6 and 7: `benchmark-extractor`, `benchmark-solver`,
+  `benchmark-judge`, `benchmark-reviewer`) is in those branches and in `legacy-cli`, but the
+  per-paper inputs are not. The sample has to be requested or rebuilt.
 
 So the open classes are `monolithic` (analysis scripts with no interface) and `missing_data`
 (code present, data or models absent). The `library` class and the documented half of

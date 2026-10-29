@@ -28,10 +28,21 @@ first run. If any of them changes, the baseline is rerun.
 - S1: the 100 computational-biology papers from the Paper2Agent sweep.
 - S2: the 10 non-biology papers (grf, SAELens, Binoculars, SAM2, TabPFN, GenericML,
   CausalImpact, Nashpy, emcee, conformal-selection).
-- Source of the list: supplementary tables shipped in the skill
-  (`paper2agent-paper/assets/supp_table/`). If the list is not there, ask the authors; as a
-  last resort, rebuild the sampling (bioRxiv, bioinformatics category, backwards from
-  December 2025, no quality filter) and state that the sample differs.
+- Source of the list: not public as of October 2026. The two supplementary tables in the
+  skill are the ADHD loci and the Scanpy datasets, not the paper list; `main`, the
+  `legacy-cli` tag and the `jdavis_*` branches hold the benchmark pipeline but no per-paper
+  inputs. Two routes, in order:
+  1. Ask the authors (James Zou's lab, Stanford) for the 100 bioRxiv DOIs and repository
+     URLs, citing the paper's statement that they are in the repository. This also gives the
+     per-paper outcome, which the rebuilt sample would not.
+  2. Rebuild the sampling as the Methods describe: bioRxiv, bioinformatics category,
+     backwards chronologically from December 2025, no filter on documentation quality,
+     repository maintenance or code completeness; keep every paper that links a code
+     repository until 100 are collected. Use the bioRxiv API with the collection filter and
+     record the query date and the page cursor. State that the sample differs from theirs and
+     that per-paper outcomes are not comparable, only the aggregate rates (74%, and the
+     34/31/23/12 split of causes from supplement section 7).
+- The 10 non-biology repositories are named in the paper and need no list.
 
 Each paper gets a row in `eval/sample.csv`: `paper_id, repo_url, commit, paper_pdf,
 paper2agent_outcome_reported`.
@@ -128,7 +139,7 @@ Secondary:
 
 ## Cost control
 
-- Paper says about 14 dollars and 45 minutes per paper. Budget for Phases 1 to 3:
+- Supplement section 7 says 14.99 dollars and 2.4 hours per converted paper, 9.03 dollars and 1.7 hours per failed one. Budget for Phases 1 to 3:
   36 papers x 2 systems, about 50 machine hours. On a Claude subscription the cost is the
   usage limit, not dollars: spread runs over days. Record tokens per run and report the
   dollar equivalent at API list price, so the number is comparable with the paper's.
@@ -144,7 +155,8 @@ Secondary:
 
 ## Risks
 
-- The paper list is not public: the sample has to be rebuilt and is not the same.
+- The paper list is not public (verified): without the authors' list the sample is rebuilt
+  and only aggregate rates are comparable.
 - The skill has changed since the paper: the baseline numbers differ from 74/100 and the
   comparison is against the rerun, which must be said.
 - Model drift between runs: fix the model ID; if the provider retires it, rerun the baseline.
