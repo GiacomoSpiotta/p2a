@@ -74,6 +74,21 @@ changed since the paper is flagged, not excluded.
 
 - Baseline and ours on all 110. Only if Phases 1 to 3 show a difference worth the cost.
 
+### Phase R (optional): reference check on the sample, no code execution
+
+- For each of the 110 papers, extract the reference list and the in-text citation contexts.
+- Existence: resolve each reference by DOI, then by title search (Crossref, OpenAlex,
+  Semantic Scholar). Record found / not found / ambiguous.
+- Claim support: for a random sample of 5 citations per paper, retrieve the cited work's
+  abstract or full text when open, and have a fresh agent judge whether the cited passage
+  supports the sentence it is attached to; a second agent re-judges blind; disagreements go
+  to a human.
+- Output: per paper, the number of unresolved references and of unsupported citations; over
+  the sample, the two rates with denominators. Compare the existence rate with CiteAudit's
+  reported numbers to check the method.
+- Cost: no code execution; one short LLM call per sampled citation. Runs within the
+  subscription limits in a few hours.
+
 ## Validation levels
 
 Every artifact is scored on one scale, for both systems:
@@ -114,7 +129,9 @@ Secondary:
 ## Cost control
 
 - Paper says about 14 dollars and 45 minutes per paper. Budget for Phases 1 to 3:
-  36 papers x 2 systems, about 1,000 dollars and 50 machine hours. Phase 4 doubles that.
+  36 papers x 2 systems, about 50 machine hours. On a Claude subscription the cost is the
+  usage limit, not dollars: spread runs over days. Record tokens per run and report the
+  dollar equivalent at API list price, so the number is comparable with the paper's.
 - Set a hard spend cap per run through the host and stop at the cap.
 - Phase 0 and the diagnosis agreement tables need no LLM budget.
 

@@ -88,6 +88,35 @@ Three numbers to report:
 Honest result to state: the tools reproduce the original outputs and run on new data. They
 are not shown to be correct on new data.
 
+## Extension: a verification report, not another AI reviewer
+
+Human reviewers read and judge. Elsevier's checklist asks whether the literature is current
+and appropriate, whether the methods allow replication, and whether references are "current
+and relevant". NeurIPS scores quality, clarity, significance and originality; reproducibility
+sits under clarity, and code is inspected at the reviewer's discretion, in a container, as
+untrusted. No reviewer runs the code, checks that a reference exists, or checks that a cited
+passage supports the claim it is cited for.
+
+Automated reviewers cover the same ground as humans, and worse: they catch 68-72% of
+injected reasoning and claim errors (Benchmarking Agentic Review Systems, 2026) but write
+59% fewer weaknesses than humans and do not separate good papers from weak ones (Unveiling
+the Merits and Defects of LLMs in Automatic Review Generation, 2025). The 2026 benchmark
+states that it does not evaluate whether systems run code or check references. That is the
+gap: verification with executable evidence, as a report attached to the human review.
+
+Three modules, each with its own evidence and its own benchmark:
+
+| Module | Question | Evidence | Existing benchmark |
+| --- | --- | --- | --- |
+| References | Does every cited work exist? Does the cited passage support the claim? | resolved DOI or record; matched passage or "not supported" | CiteAudit (arXiv:2602.23452) covers existence only; claim support is open |
+| Literature | Do "first to", "no prior work on" claims hold against a systematic search? | list of candidate prior works not cited | none found; hardest to evaluate |
+| Code | Does the code run, reproduce, generalize? | diagnosis card and validation level L0-L5 | this project |
+
+Order: code first (already in progress, clearest benchmark), references second (benchmark
+exists, the claim-support check is the new part), literature last. Keep the modules separate:
+each is a paper on its own. The combined report is the certificate that Paper2Agent's
+"agent availability" section hints at, extended from code to references and literature.
+
 ## Out of scope
 
 - Environment setup: ten systems already exist and the residual failures are structural.
